@@ -132,41 +132,42 @@
 -- TODO!
 
 
--- Dropping tables if they exist
+
 DROP TABLE IF EXISTS Roles;
 DROP TABLE IF EXISTS Actors;
 DROP TABLE IF EXISTS Movies;
 DROP TABLE IF EXISTS Studios;
--- Creating tables
+
+-- Create tables
 CREATE TABLE Studios (
     studio_id INTEGER PRIMARY KEY,
-    name TEXT
+    studio_name TEXT
 );
 CREATE TABLE Movies (
     movie_id INTEGER PRIMARY KEY,
-    title TEXT,
-    year_released INTEGER,
-    MPAA_rating TEXT,
+    movie_name TEXT,
+    year INTEGER,
+    Rating TEXT,
     studio_id INTEGER
 );
 CREATE TABLE Actors (
     actor_id INTEGER PRIMARY KEY,
-    name TEXT
+    actor_name TEXT
 );
 CREATE TABLE Roles (
     movie_id INTEGER,
     actor_id INTEGER,
     character_name TEXT
 );
--- Inserting studio data
-INSERT INTO Studios (studio_id, name) VALUES (1, 'Warner Bros.');
--- Inserting movie data
-INSERT INTO Movies (movie_id, title, year_released, MPAA_rating, studio_id) VALUES
+-- Inserting data
+INSERT INTO Studios (studio_id, studio_name) VALUES (1, 'Warner Bros.');
+
+INSERT INTO Movies (movie_id, movie_name, year, Rating, studio_id) VALUES
 (1, 'Batman Begins', 2005, 'PG-13', 1),
 (2, 'The Dark Knight', 2008, 'PG-13', 1),
 (3, 'The Dark Knight Rises', 2012, 'PG-13', 1);
--- Insert actor data
-INSERT INTO Actors (actor_id, name) VALUES 
+
+INSERT INTO Actors (actor_id, actor_name) VALUES 
 (1, 'Christian Bale'),
 (2, 'Michael Caine'),
 (3, 'Liam Neeson'),
@@ -179,40 +180,46 @@ INSERT INTO Actors (actor_id, name) VALUES
 (10, 'Joseph Gordon-Levitt'),
 (11, 'Anne Hathaway');
 
--- Inserting roles data for
+--Inserting roles data for Batman Begins
 INSERT INTO Roles (movie_id, actor_id, character_name) VALUES 
 (1, 1, 'Bruce Wayne'),
 (1, 2, 'Alfred'),
 (1, 4, 'Rachel Dawes'),
+(1, 3, 'Ra s Al Ghul'),
 (1, 5, 'Commissioner Gordon');
--- Inserting roles data for 'The Dark Knight'
+
+-- Inserting roles data for The Dark Knight
 INSERT INTO Roles (movie_id, actor_id, character_name) VALUES 
 (2, 1, 'Bruce Wayne'),
 (2, 6, 'Joker'),
 (2, 7, 'Harvey Dent'),
 (2, 2, 'Alfred'),
 (2, 8, 'Rachel Dawes');
--- Inserting roles data for 'The Dark Knight Rises'
+
+-- Inserting roles data for The Dark Knight Rises
 INSERT INTO Roles (movie_id, actor_id, character_name) VALUES 
 (3, 1, 'Bruce Wayne'),
 (3, 5, 'Commissioner Gordon'),
 (3, 9, 'Bane'),
 (3, 10, 'John Blake'),
 (3, 11, 'Selina Kyle');
--- SELECT statement for movies report
+
+
+-- SELECT statement for movies 
 SELECT 
-    M.title, 
-    M.year_released, 
-    M.MPAA_rating, 
-    S.name AS studio_name
+    M.movie_name, 
+    M.year, 
+    M.rating, 
+    S.studio_name 
 FROM Movies M
 JOIN Studios S ON M.studio_id = S.studio_id;
--- SELECT statement for top cast report
+
+-- SELECT statement for top cast 
 SELECT 
-    M.title, 
-    A.name AS actor_name, 
+    M.movie_name, 
+    A.actor_name, 
     R.character_name
 FROM Roles R
 JOIN Movies M ON R.movie_id = M.movie_id
 JOIN Actors A ON R.actor_id = A.actor_id
-ORDER BY M.title, A.name;
+ORDER BY M.movie_name, A.actor_name;
